@@ -55,7 +55,26 @@ public class Map {
     }
 
     public int getTile(int x, int y) {
+        if (x < 0 || x > getWidth() - 1 || y < 0 || y > getHeight() - 1) return 0;
         return matrix[matrix.length - y - 1][x];
+    }
+
+    public boolean existsWall(Entity entity, Entity.Direction direction) {
+        switch (direction) {
+            case UP: return getTile(entity.x, entity.y + 1) == 1;
+            case DOWN: return getTile(entity.x, entity.y - 1) == 1;
+            case LEFT: return getTile(entity.x - 1, entity.y) == 1;
+            case RIGHT: return getTile(entity.x + 1, entity.y) == 1;
+        }
+        return false;
+    }
+
+    public int getWidth() {
+        return matrix[0].length;
+    }
+
+    public int getHeight() {
+        return matrix.length;
     }
 
 }

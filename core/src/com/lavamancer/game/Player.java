@@ -2,38 +2,22 @@ package com.lavamancer.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Player {
-
-    private enum Direction { UP, DOWN, RIGHT, LEFT }
-    private static final float SPEED = 0.1f;
-
-    private Main main;
-    private Sprite sprite;
-    private int x = 10;
-    private int y = 5;
-    private Direction direction = Direction.RIGHT;
-    private float speedTick;
+public class Player extends Entity {
 
 
     public Player(Main main) {
-        this.main = main;
-        this.sprite = new Sprite(new Texture("slimeBlock.png"));
+        super(main, "slimeBlock.png");
+        x = 10;
+        y = 5;
     }
 
-    public void draw(SpriteBatch spriteBatch) {
-        sprite.setBounds(x * Map.TILE_SIZE + Map.OFFSET_X, y * Map.TILE_SIZE + Map.OFFSET_Y + 4, Map.TILE_SIZE , Map.TILE_SIZE);
-        sprite.draw(spriteBatch);
-    }
-
+    @Override
     public void update(float delta) {
         updateInput();
 
         speedTick += delta;
-        if (speedTick >= SPEED) {
+        if (speedTick >= speed) {
             speedTick = 0;
             updateMovement();
         }
@@ -66,6 +50,7 @@ public class Player {
                 case RIGHT: x++; break;
                 case LEFT: x--; break;
             }
+            checkMapBoundaries();
         }
     }
 
