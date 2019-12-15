@@ -19,7 +19,7 @@ public abstract class Entity {
 
     public Entity(Main main, String spritePath) {
         this.main = main;
-        sprite = new Sprite(new Texture(spritePath));
+        sprite = new Sprite((Texture) AssetTool.getInstance().load(spritePath, Texture.class));
     }
 
     public void draw(SpriteBatch spriteBatch) {

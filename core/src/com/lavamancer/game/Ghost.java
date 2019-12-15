@@ -28,10 +28,19 @@ public class Ghost extends Entity {
         if (speedTick >= speed) {
             speedTick = 0;
             updateMovement();
+            checkPlayerCollision();
+        }
+    }
+
+    private void checkPlayerCollision() {
+        if (x == main.player.x && y == main.player.y) {
+            main.gameOver = true;
         }
     }
 
     private void updateMovement() {
+        if (main.gameOver) return;
+
         if (existsIntersection()) {
             directionChoice.clear();
 

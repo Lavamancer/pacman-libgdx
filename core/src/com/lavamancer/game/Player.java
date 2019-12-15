@@ -10,6 +10,7 @@ public class Player extends Entity {
         super(main, "slimeBlock.png");
         x = 10;
         y = 5;
+        direction = Direction.DOWN;
     }
 
     @Override
@@ -27,6 +28,9 @@ public class Player extends Entity {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+            main.startGame();
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             direction = Direction.UP;
@@ -43,7 +47,7 @@ public class Player extends Entity {
     }
 
     private void updateMovement() {
-        if (!existsWall()) {
+        if (!existsWall() && !main.gameOver) {
             switch (direction) {
                 case UP: y++; break;
                 case DOWN: y--; break;
