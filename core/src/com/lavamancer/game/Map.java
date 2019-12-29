@@ -45,12 +45,13 @@ public class Map {
         wallSprite = new Sprite(wallTexture);
         wallSprite.setColor(Color.BLUE);
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                int tile = getTile(i, j);
+        matrix = translateMatrix(matrix);
+        for (int x = 0; x < matrix.length; x++) {
+            for (int y = 0; y < matrix[x].length; y++) {
+                int tile = matrix[x][y];
                 if (tile == 2 || tile == 3) {
-                    setTile(i, j, 0);
-                    main.entities.add(new Dot(main, matrix.length - i - 1, j, tile == 3));
+                    matrix[x][y] = 0;
+                    main.entities.add(new Dot(main, x, y, tile == 3));
                 }
             }
         }
@@ -58,11 +59,12 @@ public class Map {
     }
 
     public void draw(SpriteBatch spriteBatch) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                int tile = getTile(i, j);
+        for (int x = 0; x < matrix.length; x++) {
+            for (int y = 0; y < matrix[x].length; y++) {
+//                int tile = getTile(i, j);
+                int tile = matrix[x][y];
                 if (tile == 1) {
-                    wallSprite.setBounds(i * TILE_SIZE + OFFSET_X, j * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE);
+                    wallSprite.setBounds(x * TILE_SIZE + OFFSET_X, y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE);
                     wallSprite.draw(spriteBatch);
                 }
             }
@@ -71,13 +73,9 @@ public class Map {
 
     public int getTile(int x, int y) {
         if (x < 0 || x > getWidth() - 1 || y < 0 || y > getHeight() - 1) return 0;
-        return matrix[matrix.length - y - 1][x];
+        return matrix[x][y];
     }
 
-    public void setTile(int x, int y, int value) {
-        if (x < 0 || x > getWidth() - 1 || y < 0 || y > getHeight() - 1) return;
-        matrix[matrix.length - y - 1][x] = value;
-    }
 
     public boolean existsWall(Entity entity, Entity.Direction direction) {
         switch (direction) {
@@ -95,6 +93,16 @@ public class Map {
 
     public int getHeight() {
         return matrix.length;
+    }
+
+    public int[][] translateMatrix(int[][] matrix) {
+        int[][] aux = new int[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                aux[i][j] = matrix[matrix.length - j - 1][i];
+            }
+        }
+        return aux;
     }
 
 }
