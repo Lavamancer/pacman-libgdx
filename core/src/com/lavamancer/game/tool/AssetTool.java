@@ -1,4 +1,4 @@
-package com.lavamancer.game;
+package com.lavamancer.game.tool;
 
 import com.badlogic.gdx.assets.AssetManager;
 

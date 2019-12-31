@@ -1,6 +1,7 @@
-package com.lavamancer.game;
+package com.lavamancer.game.entity;
 
 import com.badlogic.gdx.graphics.Color;
+import com.lavamancer.game.Main;
 
 import java.util.HashMap;
 
@@ -15,8 +16,8 @@ public class Ghost extends Entity {
         super(main, "barnacle.png");
         this.type = type;
         switch (type) {
-            case BLINKY: sprite.setColor(Color.RED); x = 10; y = 11; break;
-            case PINKY: sprite.setColor(Color.PINK); x = 11; y = 11; break;
+            case BLINKY: sprite.setColor(Color.RED); x = 10; y = 11; speed = 0.15f; break;
+            case PINKY: sprite.setColor(Color.PINK); x = 11; y = 11; speed = 0.05f; break;
             case INKY: sprite.setColor(Color.CYAN); x = 9; y = 11; break;
             case CLYDE: sprite.setColor(Color.ORANGE); x = 10; y = 12; break;
         }
@@ -64,6 +65,13 @@ public class Ghost extends Entity {
                 case DOWN: direction = Direction.UP; break;
                 case LEFT: direction = Direction.RIGHT; break;
                 case RIGHT: direction = Direction.LEFT; break;
+            }
+        }
+
+        if (type == Type.BLINKY && existsIntersection()) {
+            Direction directionPath = main.map.getPath(this, main.player);
+            if (directionPath != null) {
+                direction = directionPath;
             }
         }
 

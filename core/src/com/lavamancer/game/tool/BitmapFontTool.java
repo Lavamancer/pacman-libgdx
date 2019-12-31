@@ -1,4 +1,4 @@
-package com.lavamancer.game;
+package com.lavamancer.game.tool;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;

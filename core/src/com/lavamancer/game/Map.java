@@ -1,9 +1,16 @@
 package com.lavamancer.game;
 
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lavamancer.game.entity.Dot;
+import com.lavamancer.game.entity.Entity;
+import com.lavamancer.game.pathfinder.TiledGraph;
+import com.lavamancer.game.pathfinder.TiledManhattanDistance;
+import com.lavamancer.game.pathfinder.TiledNode;
 
 public class Map {
 
@@ -14,7 +21,6 @@ public class Map {
     private Main main;
     private Sprite wallSprite;
     private int[][] matrix = new int[][] {
-
         {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
         {0,1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1,0},
         {0,1,3,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,3,1,0},
@@ -36,16 +42,20 @@ public class Map {
         {0,1,2,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,2,1,0},
         {0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,0},
         {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0}
-
     };
+    private DefaultGraphPath<TiledNode> graphPath = new DefaultGraphPath<>();
+    private TiledManhattanDistance heuristic = new TiledManhattanDistance();
+    private TiledGraph tiledGraph;
+    private IndexedAStarPathFinder<TiledNode> pathFinder;
 
     public Map(Main main) {
         this.main = main;
+        matrix = translateMatrix(matrix);
         Texture wallTexture = new Texture("stoneCenter.png");
         wallSprite = new Sprite(wallTexture);
         wallSprite.setColor(Color.BLUE);
 
-        matrix = translateMatrix(matrix);
+
         for (int x = 0; x < matrix.length; x++) {
             for (int y = 0; y < matrix[x].length; y++) {
                 int tile = matrix[x][y];
@@ -56,12 +66,35 @@ public class Map {
             }
         }
 
+        tiledGraph = new TiledGraph(this, matrix);
+        pathFinder = new IndexedAStarPathFinder<>(tiledGraph, false);
+//        System.out.println("Result Path Size: " + graphPath.nodes.size);
+//        for (TiledNode node : graphPath.nodes) {
+//            System.out.println(node.x + ", " + node.y);
+//        }
+
+//        System.out.println("Nodes:");
+//        for (int y = 0; y < matrix.length; y++) {
+//            String row = "";
+//            for (int x = 0; x < matrix.length; x++) {
+//                row += " " +  tiledGraph.getNode(x, y).tile;
+//            }
+//            System.out.println(row);
+//        }
+//
+//        System.out.println("Matrix:");
+//        for (int y = 0; y < matrix.length; y++) {
+//            String row = "";
+//            for (int x = 0; x < matrix.length; x++) {
+//                row += " " +  matrix[x][y];
+//            }
+//            System.out.println(row);
+//        }
     }
 
     public void draw(SpriteBatch spriteBatch) {
         for (int x = 0; x < matrix.length; x++) {
             for (int y = 0; y < matrix[x].length; y++) {
-//                int tile = getTile(i, j);
                 int tile = matrix[x][y];
                 if (tile == 1) {
                     wallSprite.setBounds(x * TILE_SIZE + OFFSET_X, y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE);
@@ -103,6 +136,19 @@ public class Map {
             }
         }
         return aux;
+    }
+
+    public Entity.Direction getPath(Entity from, Entity to) {
+        graphPath.clear();
+        pathFinder.searchNodePath(tiledGraph.getNode(from.x, from.y), tiledGraph.getNode(to.x, to.y), heuristic, graphPath);
+        if (graphPath.nodes.size > 1) {
+            TiledNode node = graphPath.nodes.get(1);
+            if (node.x > from.x) return Entity.Direction.RIGHT;
+            if (node.x < from.x) return Entity.Direction.LEFT;
+            if (node.y > from.y) return Entity.Direction.UP;
+            if (node.y < from.y) return Entity.Direction.DOWN;
+        }
+        return null;
     }
 
 }

@@ -2,9 +2,15 @@ package com.lavamancer.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lavamancer.game.entity.Entity;
+import com.lavamancer.game.entity.Ghost;
+import com.lavamancer.game.entity.Player;
+import com.lavamancer.game.tool.AssetTool;
+import com.lavamancer.game.tool.BitmapFontTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +21,7 @@ public class Main extends ApplicationAdapter {
 	public static final int SCREEN_HEIGHT = 800;
 	public static final float VOLUME = 0.01f;
 
-	private BitmapFont gameOverBitmapFont;
+	private BitmapFont bitmapFont;
 	private SpriteBatch spriteBatch;
 	private List<Entity> entitiesAux = new ArrayList<>();
 	public List<Entity> entities = new ArrayList<>();
@@ -27,8 +33,7 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 		spriteBatch = new SpriteBatch();
-		gameOverBitmapFont = new BitmapFont(Gdx.files.internal("minecraft.fnt"),false);
-		gameOverBitmapFont.getData().setScale(3f);
+		bitmapFont = AssetTool.getInstance().load("minecraft.fnt", BitmapFont.class);
 		startGame();
 	}
 
@@ -45,9 +50,19 @@ public class Main extends ApplicationAdapter {
 			entity.draw(spriteBatch);
 		}
 
+		bitmapFont.setColor(Color.WHITE);
 		if (gameOver) {
-			gameOverBitmapFont.draw(spriteBatch, "Game Over", Gdx.graphics.getWidth() / 2f - BitmapFontTool.getWidth(gameOverBitmapFont, "Game Over") / 2, Gdx.graphics.getHeight() / 2f + 80);
+			bitmapFont.getData().setScale(3f);
+			bitmapFont.draw(spriteBatch, "Game Over", Gdx.graphics.getWidth() / 2f - BitmapFontTool.getWidth(bitmapFont, "Game Over") / 2, Gdx.graphics.getHeight() / 2f + 80);
 		}
+		bitmapFont.getData().setScale(0.7f);
+		bitmapFont.draw(spriteBatch, "Score: " + player.score, 10, Gdx.graphics.getHeight() - 10);
+
+		bitmapFont.draw(spriteBatch, "Keys: W A S D R", 10, 50);
+
+		bitmapFont.getData().setScale(1.5f);
+		bitmapFont.setColor(Color.YELLOW);
+		bitmapFont.draw(spriteBatch, "Pacmancer", Gdx.graphics.getWidth() / 2f - BitmapFontTool.getWidth(bitmapFont, "Pacmancer") / 2, Gdx.graphics.getHeight() - 10);
 		spriteBatch.end();
 
 		// UPDATE

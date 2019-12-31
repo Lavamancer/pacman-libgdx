@@ -1,9 +1,12 @@
-package com.lavamancer.game;
+package com.lavamancer.game.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.lavamancer.game.Main;
 
 public class Player extends Entity {
+
+    public int score;
 
 
     public Player(Main main) {

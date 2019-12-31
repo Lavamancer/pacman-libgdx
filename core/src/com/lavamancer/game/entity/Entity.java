@@ -1,8 +1,11 @@
-package com.lavamancer.game;
+package com.lavamancer.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lavamancer.game.tool.AssetTool;
+import com.lavamancer.game.Main;
+import com.lavamancer.game.Map;
 
 public abstract class Entity {
 
