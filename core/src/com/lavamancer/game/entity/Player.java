@@ -7,13 +7,17 @@ import com.lavamancer.game.Main;
 public class Player extends Entity {
 
     public int score;
+    private Direction nextDirection;
 
 
     public Player(Main main) {
         super(main, "slimeBlock.png");
         x = 10;
         y = 5;
-        direction = Direction.DOWN;
+        targetX = x;
+        targetY = y;
+        direction = Direction.LEFT;
+        nextDirection = direction;
     }
 
     @Override
@@ -21,7 +25,9 @@ public class Player extends Entity {
         updateInput();
 
         speedTick += delta;
-        if (speedTick >= speed) {
+        if (speedTick >= speed || (targetX == x && targetY == y)) {
+            x = targetX;
+            y = targetY;
             speedTick = 0;
             updateMovement();
         }
@@ -36,26 +42,29 @@ public class Player extends Entity {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            direction = Direction.UP;
+            nextDirection = Direction.UP;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            direction = Direction.DOWN;
+            nextDirection = Direction.DOWN;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            direction = Direction.RIGHT;
+            nextDirection = Direction.RIGHT;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            direction = Direction.LEFT;
+            nextDirection = Direction.LEFT;
         }
     }
 
     private void updateMovement() {
         if (!existsWall() && !main.gameOver) {
+            direction = nextDirection;
+            targetX = x;
+            targetY = y;
             switch (direction) {
-                case UP: y++; break;
-                case DOWN: y--; break;
-                case RIGHT: x++; break;
-                case LEFT: x--; break;
+                case UP: targetY++; break;
+                case DOWN: targetY--; break;
+                case RIGHT: targetX++; break;
+                case LEFT: targetX--; break;
             }
             checkMapBoundaries();
         }
@@ -63,11 +72,11 @@ public class Player extends Entity {
 
     private boolean existsWall() {
         int tile = 0;
-        switch (direction) {
-            case UP: tile = main.map.getTile(x, y + 1); break;
-            case DOWN: tile = main.map.getTile(x, y - 1); break;
-            case RIGHT: tile = main.map.getTile(x + 1, y); break;
-            case LEFT: tile = main.map.getTile(x - 1, y); break;
+        switch (nextDirection) {
+            case UP: tile = main.map.getTile(targetX, targetY + 1); break;
+            case DOWN: tile = main.map.getTile(targetX, targetY - 1); break;
+            case RIGHT: tile = main.map.getTile(targetX + 1, targetY); break;
+            case LEFT: tile = main.map.getTile(targetX - 1, targetY); break;
         }
         return tile == 1;
     }

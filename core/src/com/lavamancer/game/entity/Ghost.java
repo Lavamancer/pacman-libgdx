@@ -17,16 +17,20 @@ public class Ghost extends Entity {
         this.type = type;
         switch (type) {
             case BLINKY: sprite.setColor(Color.RED); x = 10; y = 11; speed = 0.15f; break;
-            case PINKY: sprite.setColor(Color.PINK); x = 11; y = 11; speed = 0.05f; break;
+            case PINKY: sprite.setColor(Color.PINK); x = 11; y = 11; speed = 0.08f; break;
             case INKY: sprite.setColor(Color.CYAN); x = 9; y = 11; break;
             case CLYDE: sprite.setColor(Color.ORANGE); x = 10; y = 12; break;
         }
+        targetX = x;
+        targetY = y;
     }
 
     @Override
     public void update(float delta) {
         speedTick += delta;
         if (speedTick >= speed) {
+            x = targetX;
+            y = targetY;
             speedTick = 0;
             updateMovement();
             checkPlayerCollision();
@@ -75,11 +79,13 @@ public class Ghost extends Entity {
             }
         }
 
+        targetX = x;
+        targetY = y;
         switch (direction) {
-            case UP: y++; break;
-            case DOWN: y--; break;
-            case RIGHT: x++; break;
-            case LEFT: x--; break;
+            case UP: targetY++; break;
+            case DOWN: targetY--; break;
+            case RIGHT: targetX++; break;
+            case LEFT: targetX--; break;
         }
 
         checkMapBoundaries();
