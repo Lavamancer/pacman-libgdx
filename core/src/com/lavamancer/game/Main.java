@@ -4,7 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.lavamancer.game.entity.Entity;
 import com.lavamancer.game.entity.Ghost;
@@ -28,12 +30,15 @@ public class Main extends ApplicationAdapter {
 	public Map map;
 	public Player player;
 	public boolean gameOver;
+	private Sprite backgroundSprite;
 
 
 	@Override
 	public void create () {
 		spriteBatch = new SpriteBatch();
 		bitmapFont = AssetTool.getInstance().load("minecraft.fnt", BitmapFont.class);
+		backgroundSprite = new Sprite(new Texture("background.jpeg"));
+		backgroundSprite.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		startGame();
 	}
 
@@ -45,6 +50,8 @@ public class Main extends ApplicationAdapter {
 
 		// DRAW
 		spriteBatch.begin();
+//		backgroundSprite.draw(spriteBatch);
+
 		map.draw(spriteBatch);
 		for (Entity entity : entities) {
 			entity.draw(spriteBatch);

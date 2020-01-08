@@ -24,7 +24,6 @@ public class Dot extends Entity {
 
     }
 
-
     @Override
     public void update(float delta) {
         if (x == main.player.x && y == main.player.y) {
