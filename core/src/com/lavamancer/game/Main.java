@@ -37,7 +37,7 @@ public class Main extends ApplicationAdapter {
 	public void create () {
 		spriteBatch = new SpriteBatch();
 		bitmapFont = AssetTool.getInstance().load("minecraft.fnt", BitmapFont.class);
-		backgroundSprite = new Sprite(new Texture("background.jpeg"));
+		backgroundSprite = new Sprite(new Texture("background.png"));
 		backgroundSprite.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		startGame();
 	}
@@ -50,7 +50,7 @@ public class Main extends ApplicationAdapter {
 
 		// DRAW
 		spriteBatch.begin();
-//		backgroundSprite.draw(spriteBatch);
+		backgroundSprite.draw(spriteBatch);
 
 		map.draw(spriteBatch);
 		for (Entity entity : entities) {
@@ -84,7 +84,6 @@ public class Main extends ApplicationAdapter {
 	public void dispose () {
 		spriteBatch.dispose();
 	}
-
 
 	public void startGame() {
 		gameOver = false;

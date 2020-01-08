@@ -16,8 +16,7 @@ public class Ghost extends Entity {
         super(main, "barnacle.png");
         this.type = type;
         switch (type) {
-//            case BLINKY: sprite.setColor(Color.RED); x = 10; y = 11; speed = 0.15f; break;
-            case BLINKY: sprite.setColor(155, 0, 0, 255); x = 10; y = 11; speed = 0.15f; break;
+            case BLINKY: sprite.setColor(Color.RED); x = 10; y = 11; speed = 0.15f; break;
             case PINKY: sprite.setColor(Color.PINK); x = 11; y = 11; speed = 0.08f; break;
             case INKY: sprite.setColor(Color.CYAN); x = 9; y = 11; break;
             case CLYDE: sprite.setColor(Color.ORANGE); x = 10; y = 12; break;

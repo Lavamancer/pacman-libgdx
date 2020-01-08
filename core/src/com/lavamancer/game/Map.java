@@ -68,28 +68,6 @@ public class Map {
 
         tiledGraph = new TiledGraph(this, matrix);
         pathFinder = new IndexedAStarPathFinder<>(tiledGraph, false);
-//        System.out.println("Result Path Size: " + graphPath.nodes.size);
-//        for (TiledNode node : graphPath.nodes) {
-//            System.out.println(node.x + ", " + node.y);
-//        }
-
-//        System.out.println("Nodes:");
-//        for (int y = 0; y < matrix.length; y++) {
-//            String row = "";
-//            for (int x = 0; x < matrix.length; x++) {
-//                row += " " +  tiledGraph.getNode(x, y).tile;
-//            }
-//            System.out.println(row);
-//        }
-//
-//        System.out.println("Matrix:");
-//        for (int y = 0; y < matrix.length; y++) {
-//            String row = "";
-//            for (int x = 0; x < matrix.length; x++) {
-//                row += " " +  matrix[x][y];
-//            }
-//            System.out.println(row);
-//        }
     }
 
     public void draw(SpriteBatch spriteBatch) {
